@@ -1,0 +1,81 @@
+{
+    "database": {
+        "host": "127.0.0.1",
+        "user": "pterodactyl",
+        "password": "eb4lWKyz9uObotiDIPKFCIhUoqNCF/ePN/3y+EOqhQY=",
+        "name": "panel"
+    },
+    "telegram": {
+        "token": "8697691732:AAHnN90bqqvgQbCjs4MgS_rPFU06MrMCvO8",
+        "chat_id": "-1003669340821",
+        "channel": "@aboutdannz",
+        "report_channel": "@reportdann",
+        "creator": "@gantengdann"
+    },
+    "paths": {
+        "volumes": "/var/lib/pterodactyl/volumes"
+    },
+    "limits": {
+        "check_interval": 60,
+        "max_disk_gb": 20,
+        "max_file_size_mb": 100,
+        "max_file_flood": 50,
+        "flood_window": 300,
+        "panel_rate": 30,
+        "api_rate": 60,
+        "login_rate": 5
+    },
+    "protect": {
+        "password": "protect123"
+    },
+    "rce": {
+        "enabled": true,
+        "patterns": [
+            "base64_decode", "eval", "system", "exec", "passthru",
+            "shell_exec", "proc_open", "popen", "assert", "create_function",
+            "extract", "parse_str", "import_request_variables", "phpinfo",
+            "call_user_func", "call_user_func_array", "array_map", "array_filter",
+            "preg_replace", "ob_start", "mail", "putenv", "ini_set",
+            "curl_exec", "curl_init", "fsockopen", "pfsockopen",
+            "stream_socket_server", "stream_socket_client", "pcntl_exec",
+            "socket_create", "socket_connect", "socket_send", "dl",
+            "proc_get_status", "proc_nice", "proc_terminate", "proc_close",
+            "error_reporting", "ini_alter", "ini_restore", "php_uname",
+            "getmygid", "getmyinode", "getmypid", "getmyuid",
+            "memory_limit", "set_time_limit", "shell",
+            "LD_PRELOAD", "LD_LIBRARY_PATH", "LD_RUN_PATH",
+            "chmod 777", "chmod 000", "wget ", "curl ",
+            "gcc ", "g++ ", "perl ", "python ",
+            "sh -c", "bash -c", "/bin/sh", "/bin/bash",
+            "cmd.exe", "powershell", "wscript", "cscript",
+            "msfvenom", "metasploit", "mimikatz",
+            "socks5", "socks4", "proxy ", "tor ",
+            "DNSLog", "dnslog", "burp", "sqlmap",
+            "nmap ", "masscan", "hydra", "medusa"
+        ],
+        "extensions": ["php", "cpp", "c", "hpp", "h", "py", "pl", "rb", "go", "rs", "js", "sh", "bash", "java", "jar"]
+    },
+    "quarantine": {
+        "path": "/var/lib/pterodactyl/quarantine",
+        "auto_clean_days": 30
+    },
+    "php_version": "8.3",
+    "process_scan": {
+        "enabled": true,
+        "keywords": [
+            "child_process", "distress", "mhddos", "goldeneye", "slowloris",
+            "hulk", "xerxes", "torshammer", "hitme", "stresser", "stress",
+            "synflood", "udpflood", "httpflood", "tcpflood",
+            "ddos", "flood", "attack", "bomb", "hammer",
+            "gohttp", "gorilla", "loic", "hoic", "slowhttptest",
+            "memcrashed", "ntpattack", "drdos", "amplification"
+        ],
+        "max_cpu": 90,
+        "max_outbound_conns": 50
+    },
+    "anti_ddos": {
+        "enabled": true,
+        "max_outbound": 100,
+        "check_interval": 60
+    }
+}
