@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Challenge - Pterodactyl Panel</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a1a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            animation: gridMove 8s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: 0;
+            animation: orbFloat 10s ease-in-out infinite;
+        }
+        .orb-1 {
+            width: 400px; height: 400px;
+            background: #6366f1;
+            top: -100px; right: -100px;
+            animation-delay: 0s;
+        }
+        .orb-2 {
+            width: 300px; height: 300px;
+            background: #ec4899;
+            bottom: -50px; left: -50px;
+            animation-delay: -3s;
+        }
+        .orb-3 {
+            width: 250px; height: 250px;
+            background: #06b6d4;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -6s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 30px) scale(1.02); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            background: rgba(15, 15, 35, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 32px;
+            padding: 56px 48px;
+            max-width: 440px;
+            width: 92%;
+            box-shadow:
+                0 0 0 1px rgba(99, 102, 241, 0.1),
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                0 0 80px rgba(99, 102, 241, 0.05);
+            text-align: center;
+            animation: containerIn 0.6s ease-out;
+        }
+
+        @keyframes containerIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .shield {
+            width: 88px;
+            height: 88px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2), 0 8px 32px rgba(99, 102, 241, 0.3);
+            animation: shieldPulse 2s ease-in-out infinite;
+            position: relative;
+        }
+
+        .shield::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, #6366f1, #ec4899, #06b6d4);
+            z-index: -1;
+            opacity: 0.3;
+            animation: shieldGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes shieldPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        @keyframes shieldGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #e0e0f0 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            margin-bottom: 32px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .loader-ring {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 24px;
+            position: relative;
+        }
+
+        .loader-ring svg {
+            animation: ringRotate 2s linear infinite;
+        }
+
+        .loader-ring circle {
+            fill: none;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 75;
+            stroke: url(#gradient);
+            animation: ringDash 1.5s ease-in-out infinite;
+        }
+
+        @keyframes ringRotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes ringDash {
+            0% { stroke-dashoffset: 283; }
+            50% { stroke-dashoffset: 75; transform: rotate(135deg); }
+            100% { stroke-dashoffset: 283; transform: rotate(450deg); }
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899, #06b6d4);
+            background-size: 200% 100%;
+            animation: progress 3.5s ease-out forwards, progressShimmer 2s linear infinite;
+        }
+
+        @keyframes progress {
+            to { width: 100%; }
+        }
+
+        @keyframes progressShimmer {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        .status-text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 16px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: color 0.3s;
+        }
+
+        .status-text.active {
+            color: #a78bfa;
+        }
+
+        .dots {
+            display: inline-flex;
+            gap: 4px;
+            margin-left: 4px;
+        }
+
+        .dots span {
+            width: 4px;
+            height: 4px;
+            background: #a78bfa;
+            border-radius: 50%;
+            animation: dotBounce 1.2s ease-in-out infinite;
+        }
+
+        .dots span:nth-child(2) { animation-delay: 0.2s; }
+        .dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes dotBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+            30% { transform: translateY(-4px); opacity: 1; }
+        }
+
+        .footer {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-item {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .footer-item .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Particle effects */
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(99, 102, 241, 0.4);
+            border-radius: 50%;
+            animation: particleFloat linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 40px 24px; border-radius: 24px; }
+            h1 { font-size: 22px; }
+            .shield { width: 72px; height: 72px; font-size: 28px; border-radius: 20px; }
+            .shield::after { border-radius: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="50%" stop-color="#a855f7"/>
+                <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <div class="container">
+        <div class="shield">&#128737;</div>
+        <h1>Security Challenge</h1>
+        <p class="subtitle">Verifying your connection<br>to protect against automated attacks</p>
+
+        <div class="loader-ring">
+            <svg width="56" height="56" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45"/>
+            </svg>
+        </div>
+
+        <div class="progress-track">
+            <div class="progress-fill"></div>
+        </div>
+
+        <div class="status-text" id="status">Initializing<span class="dots"><span></span><span></span><span></span></span></div>
+
+        <div class="footer">
+            <div class="footer-item">
+                <span class="dot"></span>
+                Protected
+            </div>
+            <div class="footer-item">
+                DANN Network
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
+            p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+            p.style.animationDelay = Math.random() * -20 + 's';
+            p.style.opacity = Math.random() * 0.5 + 0.2;
+            particlesContainer.appendChild(p);
+        }
+
+        const statusEl = document.getElementById('status');
+        const steps = [
+            'Analyzing connection',
+            'Checking browser integrity',
+            'Validating security tokens',
+            'Almost done',
+            'Redirecting'
+        ];
+
+        let step = 0;
+        function updateStatus() {
+            if (step < steps.length) {
+                statusEl.textContent = steps[step];
+                statusEl.classList.add('active');
+                step++;
+                setTimeout(updateStatus, 700);
+            }
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectUrl = urlParams.get('redirect') || '/';
+
+        setTimeout(() => {
+            const form = document.createElement('form');
+            form.method = 'GET';
+            form.action = '/__ddos_challenge/verify';
+            form.style.display = 'none';
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'redirect';
+            input.value = redirectUrl;
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }, 3500);
+
+        updateStatus();
+    </script>
+</body>
+</html>
