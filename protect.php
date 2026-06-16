@@ -958,11 +958,21 @@ table tr:last-child td { border-bottom: none; }
   </div>
 
   <div class="card" style="margin-top:16px">
+    <div class="card-header">🤖 Telegram Configuration</div>
+    <div class="stat"><span class="stat-label">Bot Token</span><span class="stat-value" style="font-family:monospace;font-size:12px"><?=htmlspecialchars($cfg['telegram']['token'] ?? 'Not set')?></span></div>
+    <div class="stat"><span class="stat-label">Chat ID (Group)</span><span class="stat-value" style="font-family:monospace"><?=htmlspecialchars($cfg['telegram']['chat_id'] ?? 'Not set')?></span></div>
+    <div class="stat"><span class="stat-label">Main Channel</span><span class="stat-value"><?=htmlspecialchars($cfg['telegram']['channel'] ?? 'Not set')?></span></div>
+    <div class="stat"><span class="stat-label">Report Channel</span><span class="stat-value"><?=htmlspecialchars($cfg['telegram']['report_channel'] ?? 'Not set')?></span></div>
+    <div class="stat"><span class="stat-label">Creator</span><span class="stat-value"><?=htmlspecialchars($cfg['telegram']['creator'] ?? 'Not set')?></span></div>
+    <div class="actions" style="margin-top:12px"><a href="<?=tabUrl('broadcast')?>" class="btn btn-primary btn-sm">Send Broadcast</a></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
     <div class="card-header">Protection Rules</div>
     <div class="row row-4" style="margin:0;gap:8px">
-      <div class="stat"><span class="stat-label">Panel Rate Limit</span><span class="stat-value">30 req/s</span></div>
-      <div class="stat"><span class="stat-label">Login Rate Limit</span><span class="stat-value">5 req/s</span></div>
-      <div class="stat"><span class="stat-label">API Rate Limit</span><span class="stat-value">60 req/s</span></div>
+      <div class="stat"><span class="stat-label">Panel Rate Limit</span><span class="stat-value"><?=intval($cfg['limits']['panel_rate'] ?? 30)?> req/s</span></div>
+      <div class="stat"><span class="stat-label">Login Rate Limit</span><span class="stat-value"><?=intval($cfg['limits']['login_rate'] ?? 5)?> req/s</span></div>
+      <div class="stat"><span class="stat-label">API Rate Limit</span><span class="stat-value"><?=intval($cfg['limits']['api_rate'] ?? 60)?> req/s</span></div>
       <div class="stat"><span class="stat-label">Bad Bot Block</span><span class="badge badge-green">Enabled</span></div>
       <div class="stat"><span class="stat-label">Clearance Method</span><span class="stat-value">Device ID + IP</span></div>
       <div class="stat"><span class="stat-label">Clearance TTL</span><span class="stat-value">1 hour</span></div>
