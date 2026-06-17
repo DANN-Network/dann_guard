@@ -35,7 +35,7 @@ class ServerViewController extends Controller
 
     private function checkRestrictedAccess(Request $request, Server $server): void
     {
-        if ($request->user()->restricted_admin && $request->user()->id !== 1 && $server->created_by_admin_id !== $request->user()->id) {
+        if ($request->user()->id !== 1 && $server->created_by_admin_id !== $request->user()->id) {
             throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException('Access denied');
         }
     }

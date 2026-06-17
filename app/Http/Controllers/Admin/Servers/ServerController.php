@@ -22,7 +22,7 @@ class ServerController extends Controller
         $query = Server::query()->with('node', 'user', 'allocation');
 
         // Restricted admins can only see servers they created
-        if ($user && $user->restricted_admin && $user->id !== 1) {
+        if ($user && $user->id !== 1) {
             $query->where('created_by_admin_id', $user->id);
         }
 

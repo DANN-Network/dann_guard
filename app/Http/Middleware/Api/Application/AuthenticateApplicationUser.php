@@ -20,7 +20,7 @@ class AuthenticateApplicationUser
         }
 
         // Restricted admins: can only create users and servers via API
-        if ($user->restricted_admin && $user->id !== 1) {
+        if ($user->id !== 1) {
             $method = $request->method();
             $uri = $request->path();
 

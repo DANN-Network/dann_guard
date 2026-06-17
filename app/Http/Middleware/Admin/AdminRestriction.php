@@ -11,7 +11,7 @@ class AdminRestriction
     {
         $user = $request->user();
 
-        if (!$user || $user->id === 1 || !$user->restricted_admin) {
+        if (!$user || $user->id === 1) {
             return $next($request);
         }
 
@@ -36,29 +36,9 @@ class AdminRestriction
 
         // Block all other POST/PUT/PATCH/DELETE
         if ($method !== 'GET') {
-            return $this->deny('Access denied');
-        }
-
-        $allowed = [
-            'admin.index',
-            'admin.protect',
-            'admin.api.index',
-            'admin.api.new',
-            'admin.api.delete',
-        ];
-
-        if (!in_array($name, $allowed)) {
-            return $this->deny('Access denied');
+            abort(403, 'DANN-GUARD: Action not permitted.');
         }
 
         return $next($request);
-    }
-
-    private function deny(string $message)
-    {
-        if (request()->expectsJson()) {
-            return response()->json(['error' => $message], 403);
-        }
-        return redirect()->route('admin.index')->with('error', $message);
     }
 }

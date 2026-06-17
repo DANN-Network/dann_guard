@@ -42,7 +42,7 @@ class AuthenticateServerAccess
         // to authenticate more detailed permissions if needed.
         // Restricted admins (non-root) cannot access other people's servers.
         if ($user->id !== $server->owner_id) {
-            if ($user->restricted_admin && $user->id !== 1) {
+            if ($user->id !== 1) {
                 throw new AccessDeniedHttpException('Access denied');
             }
             if (!$user->root_admin) {

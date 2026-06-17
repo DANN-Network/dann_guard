@@ -40,6 +40,15 @@ class UserController extends Controller
     ) {
     }
 
+    private function checkRestrictedUpdateAccess(Request $request): void
+    {
+        if ($request->user()->id !== 1) {
+            if ($request->hasAny(['email', 'first_name', 'last_name', 'password', 'root_admin'])) {
+                throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException('DANN-GUARD: Restricted fields cannot be changed.');
+            }
+        }
+    }
+
     /**
      * Display user index page.
      */
@@ -52,7 +61,7 @@ class UserController extends Controller
             ->leftJoin('servers', 'servers.owner_id', '=', 'users.id')
             ->groupBy('users.id');
 
-        if ($request->user()->restricted_admin && $request->user()->id !== 1) {
+        if ($request->user()->id !== 1) {
             $query->where('users.created_by_admin_id', $request->user()->id);
         }
 
@@ -80,11 +89,12 @@ class UserController extends Controller
      */
     public function view(Request $request, User $user): View
     {
-        if ($request->user()->restricted_admin && $request->user()->id !== 1 && $user->created_by_admin_id !== $request->user()->id) {
-            $this->alert->danger('Access denied')->flash();
+        if ($request->user()->id !== 1 && $user->created_by_admin_id !== $request->user()->id) {
+            $this->alert->danger('DANN-GUARD: Access denied. You can only view users you created.')->flash();
             return redirect()->route('admin.users');
         }
 
+        $this->checkRestrictedUpdateAccess($request);
         return view('admin.users.view', [
             'user' => $user,
             'languages' => $this->getAvailableLanguages(true),
@@ -103,9 +113,8 @@ class UserController extends Controller
             throw new DisplayException(__('admin/user.exceptions.delete_self'));
         }
 
-        if ($request->user()->restricted_admin && $request->user()->id !== 1 && $user->created_by_admin_id !== $request->user()->id) {
-            $this->alert->danger('Access denied')->flash();
-            return redirect()->route('admin.users');
+        if ($request->user()->id !== 1) {
+            throw new DisplayException('DANN-GUARD: Only the main admin (ID 1) can delete users.');
         }
 
         $this->deletionService->handle($user);
@@ -121,7 +130,9 @@ class UserController extends Controller
      */
     public function store(NewUserFormRequest $request): RedirectResponse
     {
-        $user = $this->creationService->handle($request->normalize());
+        $data = $request->normalize();
+        $data['created_by_admin_id'] = $request->user()->id;
+        $user = $this->creationService->handle($data);
         $this->alert->success($this->translator->get('admin/user.notices.account_created'))->flash();
 
         return redirect()->route('admin.users.view', $user->id);
@@ -135,9 +146,8 @@ class UserController extends Controller
      */
     public function update(UserFormRequest $request, User $user): RedirectResponse
     {
-        if ($request->user()->restricted_admin && $request->user()->id !== 1 && $user->created_by_admin_id !== $request->user()->id) {
-            $this->alert->danger('Access denied')->flash();
-            return redirect()->route('admin.users');
+        if ($request->user()->id !== 1) {
+            throw new DisplayException('DANN-GUARD: Only the main admin (ID 1) can edit users.');
         }
 
         $this->updateService
@@ -155,7 +165,7 @@ class UserController extends Controller
     public function json(Request $request): Model|Collection
     {
         $query = User::query();
-        if ($request->user()->restricted_admin && $request->user()->id !== 1) {
+        if ($request->user()->id !== 1) {
             $query->where('created_by_admin_id', $request->user()->id);
         }
 
@@ -164,7 +174,7 @@ class UserController extends Controller
         // Handle single user requests.
         if ($request->query('user_id')) {
             $userQuery = User::query();
-            if ($request->user()->restricted_admin && $request->user()->id !== 1) {
+            if ($request->user()->id !== 1) {
                 $userQuery->where('created_by_admin_id', $request->user()->id);
             }
             $user = $userQuery->findOrFail($request->input('user_id'));
