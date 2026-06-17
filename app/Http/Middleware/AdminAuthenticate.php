@@ -3,7 +3,6 @@
 namespace Pterodactyl\Http\Middleware;
 
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AdminAuthenticate
 {
@@ -11,7 +10,7 @@ class AdminAuthenticate
     {
         $user = $request->user();
         if (!$user || !$user->root_admin) {
-            throw new HttpException(403, 'This area requires admin access.');
+            abort(403, 'This area requires admin access.');
         }
 
         // User ID 1 (main root) bypasses all restrictions
@@ -19,13 +18,7 @@ class AdminAuthenticate
             return $next($request);
         }
 
-        // All other admins are restricted by protect_permissions
-        $perms = null;
-        if ($user->protect_permissions) {
-            $perms = json_decode($user->protect_permissions, true);
-        }
-
-        // If no permissions explicitly set, restrict everything
+        // All other admins are restricted
         $path = $request->path();
         $method = $request->method();
 
@@ -49,7 +42,7 @@ class AdminAuthenticate
         return $next($request);
     }
 
-    public static function blocked(string $reason = 'ACCESS_DENIED'): never
+    public static function blocked(string $reason = 'ACCESS_DENIED'): mixed
     {
         $messages = [
             'SERVER_ACCESS' => 'You are not authorized to view server details.',
@@ -107,7 +100,6 @@ p{font-size:14px;color:#9a9ab0;line-height:1.6;margin-bottom:20px}
 </body>
 </html>
 HTML;
-        throw new HttpException(403, $msg, null, [], $html);
+        return response($html, 403)->header('Content-Type', 'text/html');
     }
 }
-
