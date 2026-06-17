@@ -21,8 +21,8 @@ class AdminRestriction
         $method = $request->method();
         $uri = $request->path();
 
-        // Allow users and servers routes
-        if (str_starts_with($uri, 'admin/users') || str_starts_with($uri, 'admin/servers')) {
+        // Allow users, servers, and api routes
+        if (str_starts_with($uri, 'admin/users') || str_starts_with($uri, 'admin/servers') || str_starts_with($uri, 'admin/api')) {
             return $next($request);
         }
 
