@@ -14,6 +14,7 @@ use Pterodactyl\Services\Locations\LocationUpdateService;
 use Pterodactyl\Services\Locations\LocationCreationService;
 use Pterodactyl\Services\Locations\LocationDeletionService;
 use Pterodactyl\Contracts\Repository\LocationRepositoryInterface;
+
 class LocationController extends Controller
 {
     public function __construct(
@@ -26,17 +27,8 @@ class LocationController extends Controller
     ) {
     }
 
-    private function checkAccess(): void
-    {
-        $user = request()->user();
-        if (!$user || $user->id !== 1) {
-            abort(403, 'DANN-GUARD: Only main admin (ID 1) can access Locations.');
-        }
-    }
-
     public function index(): View
     {
-        $this->checkAccess();
         return view('admin.locations.index', [
             'locations' => $this->repository->getAllWithDetails(),
         ]);
@@ -44,7 +36,6 @@ class LocationController extends Controller
 
     public function view(int $id): View
     {
-        $this->checkAccess();
         return view('admin.locations.view', [
             'location' => $this->repository->getWithNodes($id),
         ]);
@@ -52,7 +43,6 @@ class LocationController extends Controller
 
     public function create(LocationFormRequest $request): RedirectResponse
     {
-        $this->checkAccess();
         $location = $this->creationService->handle($request->normalize());
         $this->alert->success('Location was created successfully.')->flash();
         return redirect()->route('admin.locations.view', $location->id);
@@ -60,7 +50,6 @@ class LocationController extends Controller
 
     public function update(LocationFormRequest $request, Location $location): RedirectResponse
     {
-        $this->checkAccess();
         if ($request->input('action') === 'delete') {
             return $this->delete($location);
         }
@@ -71,7 +60,6 @@ class LocationController extends Controller
 
     public function delete(Location $location): RedirectResponse
     {
-        $this->checkAccess();
         try {
             $this->deletionService->handle($location->id);
             return redirect()->route('admin.locations');

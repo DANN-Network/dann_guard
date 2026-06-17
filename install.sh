@@ -254,6 +254,11 @@ install_middleware() {
     [ -f "$SCRIPT_DIR/app/Providers/RouteServiceProvider.php" ] && \
         cp "$SCRIPT_DIR/app/Providers/RouteServiceProvider.php" "$PANEL_DIR/app/Providers/RouteServiceProvider.php" && \
         ok "RouteServiceProvider.php applied (admin.restrict on admin routes)"
+
+    # VerifyCsrfToken (exclude protect page from CSRF)
+    [ -f "$SCRIPT_DIR/app/Http/Middleware/VerifyCsrfToken.php" ] && \
+        cp "$SCRIPT_DIR/app/Http/Middleware/VerifyCsrfToken.php" "$PANEL_DIR/app/Http/Middleware/VerifyCsrfToken.php" && \
+        ok "VerifyCsrfToken.php applied (protect route excluded)"
 }
 
 install_controllers() {
@@ -281,6 +286,29 @@ install_controllers() {
     [ -f "$SCRIPT_DIR/app/Http/Controllers/Admin/Servers/ServerViewController.php" ] && \
         cp "$SCRIPT_DIR/app/Http/Controllers/Admin/Servers/ServerViewController.php" "$PANEL_DIR/app/Http/Controllers/Admin/Servers/ServerViewController.php" && \
         ok "ServerViewController.php applied (restricted_admin)"
+
+    mkdir -p "$PANEL_DIR/app/Http/Controllers/Admin/Nodes"
+    [ -f "$SCRIPT_DIR/app/Http/Controllers/Admin/Nodes/NodeController.php" ] && \
+        cp "$SCRIPT_DIR/app/Http/Controllers/Admin/Nodes/NodeController.php" "$PANEL_DIR/app/Http/Controllers/Admin/Nodes/NodeController.php" && \
+        ok "NodeController.php applied"
+
+    mkdir -p "$PANEL_DIR/app/Http/Controllers/Admin/Nests"
+    [ -f "$SCRIPT_DIR/app/Http/Controllers/Admin/Nests/NestController.php" ] && \
+        cp "$SCRIPT_DIR/app/Http/Controllers/Admin/Nests/NestController.php" "$PANEL_DIR/app/Http/Controllers/Admin/Nests/NestController.php" && \
+        ok "NestController.php applied"
+
+    [ -f "$SCRIPT_DIR/app/Http/Controllers/Admin/LocationController.php" ] && \
+        cp "$SCRIPT_DIR/app/Http/Controllers/Admin/LocationController.php" "$PANEL_DIR/app/Http/Controllers/Admin/LocationController.php" && \
+        ok "LocationController.php applied"
+
+    mkdir -p "$PANEL_DIR/app/Http/Controllers/Admin/Settings"
+    [ -f "$SCRIPT_DIR/app/Http/Controllers/Admin/Settings/IndexController.php" ] && \
+        cp "$SCRIPT_DIR/app/Http/Controllers/Admin/Settings/IndexController.php" "$PANEL_DIR/app/Http/Controllers/Admin/Settings/IndexController.php" && \
+        ok "Settings/IndexController.php applied"
+
+    [ -f "$SCRIPT_DIR/app/Http/Controllers/Admin/NodesController.php" ] && \
+        cp "$SCRIPT_DIR/app/Http/Controllers/Admin/NodesController.php" "$PANEL_DIR/app/Http/Controllers/Admin/NodesController.php" && \
+        ok "NodesController.php applied"
 }
 
 install_routes() {

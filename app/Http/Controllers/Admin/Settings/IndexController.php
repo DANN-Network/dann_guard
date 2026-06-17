@@ -11,6 +11,7 @@ use Pterodactyl\Traits\Helpers\AvailableLanguages;
 use Pterodactyl\Services\Helpers\SoftwareVersionService;
 use Pterodactyl\Contracts\Repository\SettingsRepositoryInterface;
 use Pterodactyl\Http\Requests\Admin\Settings\BaseSettingsFormRequest;
+
 class IndexController extends Controller
 {
     use AvailableLanguages;
@@ -23,17 +24,8 @@ class IndexController extends Controller
     ) {
     }
 
-    private function checkAccess(): void
-    {
-        $user = request()->user();
-        if (!$user || $user->id !== 1) {
-            abort(403, 'DANN-GUARD: Only main admin (ID 1) can access Settings.');
-        }
-    }
-
     public function index(): View
     {
-        $this->checkAccess();
         return view('admin.settings.index', [
             'version' => $this->versionService,
             'languages' => $this->getAvailableLanguages(true),
@@ -42,7 +34,6 @@ class IndexController extends Controller
 
     public function update(BaseSettingsFormRequest $request): RedirectResponse
     {
-        $this->checkAccess();
         foreach ($request->normalize() as $key => $value) {
             $this->settings->set('settings::' . $key, $value);
         }

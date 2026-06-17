@@ -12,6 +12,7 @@ use Pterodactyl\Services\Nests\NestCreationService;
 use Pterodactyl\Services\Nests\NestDeletionService;
 use Pterodactyl\Contracts\Repository\NestRepositoryInterface;
 use Pterodactyl\Http\Requests\Admin\Nest\StoreNestFormRequest;
+
 class NestController extends Controller
 {
     public function __construct(
@@ -24,17 +25,8 @@ class NestController extends Controller
     ) {
     }
 
-    private function checkAccess(): void
-    {
-        $user = request()->user();
-        if (!$user || $user->id !== 1) {
-            abort(403, 'DANN-GUARD: Only main admin (ID 1) can access Nests.');
-        }
-    }
-
     public function index(): View
     {
-        $this->checkAccess();
         return view('admin.nests.index', [
             'nests' => $this->repository->getWithCounts(),
         ]);
@@ -42,13 +34,11 @@ class NestController extends Controller
 
     public function create(): View
     {
-        $this->checkAccess();
         return view('admin.nests.new');
     }
 
     public function store(StoreNestFormRequest $request): RedirectResponse
     {
-        $this->checkAccess();
         $nest = $this->nestCreationService->handle($request->normalize());
         $this->alert->success(trans('admin/nests.notices.created', ['name' => htmlspecialchars($nest->name)]))->flash();
         return redirect()->route('admin.nests.view', $nest->id);
@@ -56,7 +46,6 @@ class NestController extends Controller
 
     public function view(int $nest): View
     {
-        $this->checkAccess();
         return view('admin.nests.view', [
             'nest' => $this->repository->getWithEggServers($nest),
         ]);
@@ -64,7 +53,6 @@ class NestController extends Controller
 
     public function update(StoreNestFormRequest $request, int $nest): RedirectResponse
     {
-        $this->checkAccess();
         $this->nestUpdateService->handle($nest, $request->normalize());
         $this->alert->success(trans('admin/nests.notices.updated'))->flash();
         return redirect()->route('admin.nests.view', $nest);
@@ -72,7 +60,6 @@ class NestController extends Controller
 
     public function destroy(int $nest): RedirectResponse
     {
-        $this->checkAccess();
         $this->nestDeletionService->handle($nest);
         $this->alert->success(trans('admin/nests.notices.deleted'))->flash();
         return redirect()->route('admin.nests');

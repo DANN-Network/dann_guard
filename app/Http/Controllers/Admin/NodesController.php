@@ -45,17 +45,8 @@ class NodesController extends Controller
     ) {
     }
 
-    private function checkAccess(): void
-    {
-        $user = request()->user();
-        if (!$user || $user->id !== 1) {
-            abort(403, 'DANN-GUARD: Only main admin (ID 1) can access Nodes.');
-        }
-    }
-
     public function create(): View|RedirectResponse
     {
-        $this->checkAccess();
         $locations = $this->locationRepository->all();
         if (count($locations) < 1) {
             $this->alert->warning(trans('admin/node.notices.location_required'))->flash();
@@ -66,7 +57,6 @@ class NodesController extends Controller
 
     public function store(NodeFormRequest $request): RedirectResponse
     {
-        $this->checkAccess();
         $node = $this->creationService->handle($request->normalize());
         $this->alert->info(trans('admin/node.notices.node_created'))->flash();
         return redirect()->route('admin.nodes.view.allocation', $node->id);
@@ -74,7 +64,6 @@ class NodesController extends Controller
 
     public function updateSettings(NodeFormRequest $request, Node $node): RedirectResponse
     {
-        $this->checkAccess();
         $this->updateService->handle($node, $request->normalize(), $request->input('reset_secret') === 'on');
         $this->alert->success(trans('admin/node.notices.node_updated'))->flash();
         return redirect()->route('admin.nodes.view.settings', $node->id)->withInput();
@@ -82,14 +71,12 @@ class NodesController extends Controller
 
     public function allocationRemoveSingle(int $node, Allocation $allocation): Response
     {
-        $this->checkAccess();
         $this->allocationDeletionService->handle($allocation);
         return response('', 204);
     }
 
     public function allocationRemoveMultiple(Request $request, int $node): Response
     {
-        $this->checkAccess();
         $allocations = $request->input('allocations');
         foreach ($allocations as $rawAllocation) {
             $allocation = new Allocation();
@@ -101,7 +88,6 @@ class NodesController extends Controller
 
     public function allocationRemoveBlock(Request $request, int $node): RedirectResponse
     {
-        $this->checkAccess();
         $this->allocationRepository->deleteWhere([
             ['node_id', '=', $node],
             ['server_id', '=', null],
@@ -113,7 +99,6 @@ class NodesController extends Controller
 
     public function allocationSetAlias(AllocationAliasFormRequest $request): \Symfony\Component\HttpFoundation\Response
     {
-        $this->checkAccess();
         $this->allocationRepository->update($request->input('allocation_id'), [
             'ip_alias' => (empty($request->input('alias'))) ? null : $request->input('alias'),
         ]);
@@ -122,7 +107,6 @@ class NodesController extends Controller
 
     public function createAllocation(AllocationFormRequest $request, Node $node): RedirectResponse
     {
-        $this->checkAccess();
         $this->assignmentService->handle($node, $request->normalize());
         $this->alert->success(trans('admin/node.notices.allocations_added'))->flash();
         return redirect()->route('admin.nodes.view.allocation', $node->id);
@@ -130,7 +114,6 @@ class NodesController extends Controller
 
     public function delete(int|Node $node): RedirectResponse
     {
-        $this->checkAccess();
         $this->deletionService->handle($node);
         $this->alert->success(trans('admin/node.notices.node_deleted'))->flash();
         return redirect()->route('admin.nodes');

@@ -7,15 +7,11 @@ use Illuminate\Http\Request;
 use Pterodactyl\Models\Node;
 use Spatie\QueryBuilder\QueryBuilder;
 use Pterodactyl\Http\Controllers\Controller;
+
 class NodeController extends Controller
 {
     public function index(Request $request): View
     {
-        $user = $request->user();
-        if (!$user || $user->id !== 1) {
-            abort(403, 'DANN-GUARD: Only main admin (ID 1) can access Nodes.');
-        }
-
         $nodes = QueryBuilder::for(
             Node::query()->with('location')->withCount('servers')
         )
