@@ -1,0 +1,25 @@
+{
+    "database": {
+        "host": "127.0.0.1",
+        "user": "pterodactyl",
+        "password": "kontolodon",
+        "name": "panel"
+    },
+    "telegram": {
+        "token": "8697691732:AAFFhk5RV2OFCpqOlK1fqdju3seIfluhGow",
+        "chat_id": "-1003669340821",
+        "channel": "@aboutdannz",
+        "report_channel": "@reportdann",
+        "creator": "@gantengdann"
+    },
+    "paths": {
+        "volumes": "/var/lib/pterodactyl/volumes"
+    },
+    "limits": {
+        "check_interval": 2,
+        "max_disk_gb": 10.0,
+        "max_file_size_mb": 500,
+        "max_file_flood": 20,
+        "flood_window": 10
+    }
+}

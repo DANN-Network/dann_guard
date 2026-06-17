@@ -1,0 +1,393 @@
+:root {
+    --bg-base: #07070b;
+    --bg-surface: #0b0b10;
+    --bg-elevated: #111117;
+    --bg-hover: #15151d;
+    --bg-inset: #09090d;
+    --border: #1e1e2a;
+    --border-light: #2a2a3a;
+    --fg-primary: #e0e0f0;
+    --fg-secondary: #a3a3b2;
+    --fg-muted: #6a6a7e;
+    --accent: #8b5cf6;
+    --accent-hover: #a78bfa;
+    --accent-dim: rgba(139, 92, 246, 0.12);
+    --accent-alt: #06b6d4;
+    --accent-alt-hover: #22d3ee;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+::selection {
+    background: rgba(139, 92, 246, 0.25);
+    color: #fff;
+}
+
+body {
+    color: var(--fg-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: var(--accent);
+    transition: color 0.15s ease;
+}
+a:hover {
+    color: var(--accent-hover);
+}
+
+code {
+    background-color: var(--bg-hover);
+    color: var(--accent);
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 85%;
+    border: 1px solid var(--border);
+}
+
+p { line-height: 1.6 !important; }
+p.small { margin-top: 3px !important; }
+
+.table { font-size: 13px !important; }
+.table .min-size { width: 1px; white-space: nowrap; }
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    border-top: 1px solid var(--border);
+}
+.table > thead > tr > th {
+    border-bottom: 2px solid var(--border);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--fg-muted);
+}
+.table-hover > tbody > tr:hover {
+    background-color: var(--bg-surface) !important;
+}
+
+pre {
+    color: var(--fg-primary);
+    background-color: var(--bg-elevated);
+    border-color: var(--border);
+    border-radius: 6px;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6,
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+hr {
+    border-color: var(--border);
+}
+
+/* ── AdminLTE ── */
+.skin-blue .wrapper,
+.skin-blue .main-sidebar,
+.skin-blue .left-side {
+    background-color: var(--bg-base);
+}
+
+.skin-blue .main-header .logo {
+    background-color: var(--bg-surface);
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.15s ease;
+}
+.skin-blue .main-header .logo:hover {
+    background-color: var(--bg-hover);
+}
+
+.skin-blue .main-header .navbar {
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+}
+.skin-blue .main-header .navbar .sidebar-toggle {
+    color: var(--fg-muted);
+    transition: color 0.15s ease;
+}
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+    background-color: var(--bg-hover);
+    color: var(--accent);
+}
+.skin-blue .main-header .navbar .nav > li > a {
+    color: var(--fg-secondary);
+    transition: color 0.15s ease;
+}
+.skin-blue .main-header .navbar .nav > li > a:hover {
+    background-color: var(--bg-hover);
+    color: var(--accent);
+}
+
+.skin-blue .sidebar-menu > li.header {
+    color: var(--fg-muted);
+    background: transparent;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 18px 18px 6px;
+}
+.skin-blue .sidebar-menu > li > a {
+    color: var(--fg-secondary);
+    border-left: 3px solid transparent;
+    transition: all 0.15s ease;
+}
+.skin-blue .sidebar-menu > li > a:hover {
+    background: var(--bg-hover);
+    border-left-color: var(--accent);
+    color: var(--fg-primary);
+}
+.skin-blue .sidebar-menu > li.active > a {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: var(--bg-elevated);
+}
+.skin-blue .sidebar-menu > li > .treeview-menu {
+    background: var(--bg-base);
+    margin: 0;
+}
+.skin-blue .sidebar-menu > li > .treeview-menu > li > a {
+    color: var(--fg-secondary);
+    border-left: 3px solid transparent;
+    transition: all 0.15s ease;
+}
+.skin-blue .sidebar-menu > li > .treeview-menu > li > a:hover {
+    background: var(--bg-hover);
+    color: var(--accent);
+    border-left-color: var(--accent);
+}
+.skin-blue .sidebar-menu > li > .treeview-menu > li.active > a {
+    color: var(--accent);
+    border-left-color: var(--accent);
+}
+
+.skin-blue .main-footer {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border);
+    color: var(--fg-muted);
+}
+
+/* ── Cards / Content ── */
+.box, .info-box, .small-box {
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+.box {
+    background: var(--bg-elevated);
+    border-top: 3px solid var(--accent);
+}
+.box-header {
+    color: var(--fg-primary);
+    border-bottom: 1px solid var(--border);
+}
+.box-body {
+    background: var(--bg-elevated);
+}
+.box-footer {
+    background: transparent;
+    border-top: 1px solid var(--border);
+}
+
+.box.box-primary {
+    border-top-color: var(--accent);
+}
+
+/* ── Buttons ── */
+.btn {
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+.btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+.btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+/* ── Forms ── */
+.form-control {
+    background: var(--bg-hover);
+    color: var(--fg-primary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: border-color 0.15s ease;
+}
+.form-control:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-dim);
+}
+
+/* ── Labels ── */
+.label {
+    border-radius: 4px;
+}
+.label-primary {
+    background: var(--accent);
+}
+.label-success {
+    background: var(--success);
+}
+.label-warning {
+    background: var(--warning);
+}
+.label-danger {
+    background: var(--danger);
+}
+
+/* ── Navigation ── */
+.content-header > h1 {
+    color: var(--fg-primary);
+}
+.content-header > .breadcrumb > li > a {
+    color: var(--accent);
+}
+.content-header > .breadcrumb > li > a:hover {
+    color: var(--accent-hover);
+}
+.content-header > .breadcrumb > .active {
+    color: var(--fg-muted);
+}
+
+/* ── Pagination ── */
+.pagination > li > a,
+.pagination > li > span {
+    background: var(--bg-elevated);
+    color: var(--fg-secondary);
+    border: 1px solid var(--border);
+}
+.pagination > li > a:hover,
+.pagination > li > span:hover {
+    background: var(--bg-hover);
+    color: var(--accent);
+}
+.pagination > .active > a,
+.pagination > .active > span {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: #fff;
+}
+
+/* ── Progress bars ── */
+.progress {
+    background: var(--bg-hover);
+    border-radius: 4px;
+}
+.progress-bar {
+    background: var(--accent);
+}
+
+/* ── Callouts ── */
+.callout {
+    border-radius: 6px;
+}
+.callout.callout-info {
+    background: var(--accent-dim);
+    border-left-color: var(--accent);
+}
+
+/* ── Misc ── */
+.text-primary {
+    color: var(--accent) !important;
+}
+.bg-primary {
+    background: var(--accent) !important;
+}
+.text-teal {
+    color: var(--accent-alt) !important;
+}
+.bg-teal {
+    background: var(--accent-alt) !important;
+}
+
+/* ── Alerts ── */
+.alert-info {
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    color: var(--fg-primary);
+}
+
+/* ── Modal ── */
+.modal-content {
+    background: var(--bg-elevated);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.5);
+}
+.modal-header {
+    border-bottom: 1px solid var(--border);
+}
+.modal-footer {
+    border-top: 1px solid var(--border);
+}
+
+/* ── Dropdown ── */
+.dropdown-menu {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+.dropdown-menu > li > a {
+    color: var(--fg-secondary);
+}
+.dropdown-menu > li > a:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ── Select2 overrides ── */
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+    background: var(--bg-hover) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 6px !important;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background: var(--accent) !important;
+}
+.select2-dropdown {
+    background: var(--bg-elevated) !important;
+    border: 1px solid var(--border) !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: var(--fg-primary) !important;
+}
+
+/* ── SweetAlert overrides ── */
+.sweet-alert {
+    background: var(--bg-elevated) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    color: var(--fg-primary) !important;
+}
+.sweet-alert h2 {
+    color: var(--fg-primary) !important;
+}
+.sweet-alert .sa-button-container .cancel {
+    background: var(--bg-hover) !important;
+    color: var(--fg-secondary) !important;
+}
+
+/* ── DANN-Network custom ── */
+.navbar-custom-menu > .navbar-nav > .user-menu > .dropdown-menu {
+    border-top: 3px solid var(--accent);
+}
+.main-header .logo .logo-lg {
+    font-weight: 700;
+}
