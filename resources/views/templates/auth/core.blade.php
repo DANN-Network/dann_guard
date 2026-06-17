@@ -7,6 +7,10 @@
 /* ── Login page DANN-GUARD custom ── */
 body {
     background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0a0a1a 100%) !important;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #app > div {
@@ -67,21 +71,6 @@ body {
     box-shadow: 0 0 60px rgba(124, 58, 237, 0.08) !important;
 }
 
-/* Mascot image */
-#app::before {
-    content: '';
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 120px;
-    height: 120px;
-    background: url('https://files.catbox.moe/cnwx8t.jpg') no-repeat center/contain;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0.9;
-    image-rendering: auto;
-}
-
 /* Forgot password link */
 #app a {
     color: #a78bfa !important;
@@ -101,16 +90,55 @@ body {
     accent-color: #7c3aed !important;
 }
 
-/* Responsive mascot */
-@media (max-width: 640px) {
-    #app::before {
-        width: 80px;
-        height: 80px;
-        bottom: 10px;
-        right: 10px;
-    }
+/* DANN-NETWORK branding above login form */
+.auth-brand {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.brand-title {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #a78bfa;
+    display: inline-block;
+    padding: 8px 24px;
+    border: 2px solid #7c3aed;
+    border-radius: 8px;
+    background: rgba(124, 58, 237, 0.05);
+    text-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+}
+
+.brand-title span {
+    color: #7c3aed;
+}
+
+/* Mascot image centered */
+.mascot-wrap {
+    text-align: center;
+    margin: 16px 0 24px;
+}
+
+.mascot-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(124, 58, 237, 0.4);
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+    display: inline-block;
 }
 </style>
+@endsection
+
+@section('above-container')
+<div class="auth-brand">
+    <div class="brand-title">DANN<span>NETWORK</span></div>
+    <div class="mascot-wrap">
+        <img src="https://files.catbox.moe/cnwx8t.jpg" class="mascot-img" alt="mascot">
+    </div>
+</div>
 @endsection
 
 @section('container')
