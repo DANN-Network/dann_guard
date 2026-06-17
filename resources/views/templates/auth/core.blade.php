@@ -7,10 +7,6 @@
 /* ── Login page DANN-GUARD custom ── */
 body {
     background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0a0a1a 100%) !important;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 #app > div {
@@ -61,14 +57,26 @@ body {
     background: #6d28d9 !important;
 }
 
-/* Login card background */
-#app > div > div {
+/* Login card wrapper */
+.auth-wrapper {
+    max-width: 420px;
+    margin: 0 auto;
     background: rgba(16, 16, 32, 0.9) !important;
     backdrop-filter: blur(12px) !important;
     border: 1px solid rgba(124, 58, 237, 0.2) !important;
     border-radius: 12px !important;
     padding: 32px !important;
     box-shadow: 0 0 60px rgba(124, 58, 237, 0.08) !important;
+}
+
+/* Make React card transparent */
+#app > div > div {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
 }
 
 /* Forgot password link */
@@ -90,39 +98,39 @@ body {
     accent-color: #7c3aed !important;
 }
 
-/* DANN-NETWORK branding above login form */
+/* ── DANN-NETWORK brand centered ── */
 .auth-brand {
     text-align: center;
     margin-bottom: 24px;
 }
 
 .brand-title {
-    font-size: 20px;
+    display: block;
+    font-size: 18px;
     font-weight: 800;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     text-transform: uppercase;
     color: #a78bfa;
-    display: inline-block;
-    padding: 8px 24px;
+    padding: 8px 28px;
     border: 2px solid #7c3aed;
     border-radius: 8px;
     background: rgba(124, 58, 237, 0.05);
-    text-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+    width: fit-content;
+    margin: 0 auto 16px;
 }
 
 .brand-title span {
     color: #7c3aed;
 }
 
-/* Mascot image centered */
 .mascot-wrap {
     text-align: center;
-    margin: 16px 0 24px;
+    margin: 0 auto;
 }
 
 .mascot-img {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid rgba(124, 58, 237, 0.4);
@@ -132,15 +140,14 @@ body {
 </style>
 @endsection
 
-@section('above-container')
-<div class="auth-brand">
-    <div class="brand-title">DANN<span>NETWORK</span></div>
-    <div class="mascot-wrap">
-        <img src="https://files.catbox.moe/cnwx8t.jpg" class="mascot-img" alt="mascot">
-    </div>
-</div>
-@endsection
-
 @section('container')
-    <div id="app"></div>
+    <div class="auth-wrapper">
+        <div class="auth-brand">
+            <div class="brand-title">DANN<span>NETWORK</span></div>
+            <div class="mascot-wrap">
+                <img src="https://files.catbox.moe/cnwx8t.jpg" class="mascot-img" alt="mascot">
+            </div>
+        </div>
+        <div id="app"></div>
+    </div>
 @endsection
