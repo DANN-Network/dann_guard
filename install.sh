@@ -307,6 +307,23 @@ run_migration() {
     fi
 }
 
+install_uno() {
+    local uno_dir="$PANEL_DIR/public/minigames/uno"
+    if [ -f "$SCRIPT_DIR/minigames/uno/index.php" ]; then
+        rm -rf "$uno_dir"
+        mkdir -p "$PANEL_DIR/public/minigames"
+        cp -r "$SCRIPT_DIR/minigames/uno" "$PANEL_DIR/public/minigames/uno"
+        chmod -R 755 "$uno_dir"
+        ok "UNO game installed ($(find "$uno_dir" -type f | wc -l) files)"
+
+        # Ensure config symlink for UNO database credentials
+        if [ -f "$CHALLENGE_DIR/config.json" ] && [ ! -L /pteroprotect/config.json ]; then
+            ln -sf "$CHALLENGE_DIR/config.json" /pteroprotect/config.json 2>/dev/null || \
+            mkdir -p /pteroprotect && cp "$CHALLENGE_DIR/config.json" /pteroprotect/config.json 2>/dev/null || true
+        fi
+    fi
+}
+
 install_quarantine() {
     local qdir
     if [ "$VOLUMES_DIR" = "/var/lib/pterodactyl/volumes" ]; then
@@ -401,6 +418,10 @@ install_routes
 # === DATABASE ===
 echo -e "${YELLOW}─── Database ───${NC}"
 run_migration
+
+# === MINIGAMES (UNO) ===
+echo -e "${YELLOW}─── Mini Games (UNO) ───${NC}"
+install_uno
 
 # === QUARANTINE ===
 echo -e "${YELLOW}─── Quarantine ───${NC}"
