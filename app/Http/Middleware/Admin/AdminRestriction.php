@@ -4,6 +4,7 @@ namespace Pterodactyl\Http\Middleware\Admin;
 
 use Closure;
 use Illuminate\Http\Request;
+use Prologue\Alerts\Facades\Alert;
 
 class AdminRestriction
 {
@@ -38,6 +39,7 @@ class AdminRestriction
             return response()->json(['error' => 'DANN-GUARD: Access denied'], 403);
         }
 
-        return redirect()->route('admin.index')->with('error', 'ACCESS DENIED');
+        Alert::danger('ACCESS DENIED')->flash();
+        return redirect()->route('admin.index');
     }
 }
